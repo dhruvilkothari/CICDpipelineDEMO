@@ -5,10 +5,10 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 893894210731.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=893894210731.dkr.ecr.ap-south-1.amazonaws.com/cicd-pipeline
-      - IMAGE_TAG=latest
-      - echo $IMAGE_TAG
+      - export REPOSITORY_URI=893894210731.dkr.ecr.ap-south-1.amazonaws.com/cicd-pipeline
+      - export IMAGE_TAG=latest
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - echo Using image tag: $IMAGE_TAG
 
   build:
     commands:
@@ -23,7 +23,7 @@ phases:
       - echo Pushing the Docker image to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' "cicd-pipeline" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
+      - printf '[{"name":"cicd-pipeline","imageUri":"%s"}]' "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
 
 artifacts:
   files:
