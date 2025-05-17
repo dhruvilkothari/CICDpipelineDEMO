@@ -8,7 +8,7 @@ phases:
       - export REPOSITORY_URI=893894210731.dkr.ecr.ap-south-1.amazonaws.com/cicd-pipeline
       - export IMAGE_TAG=latest
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-      - echo Using image tag: $IMAGE_TAG
+      - echo $IMAGE_TAG
 
   build:
     commands:
