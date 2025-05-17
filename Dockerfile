@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY ./target/cicd.jar /app
 
-EXPOSE 9000
+EXPOSE 8080
 
 CMD ["java" , "-jar", "cicd.jar"]
