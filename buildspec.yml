@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 893894210731.dkr.ecr.ap-south-1.amazonaws.com)
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 893894210731.dkr.ecr.ap-south-1.amazonaws.com
       - REPOSITORY_URI=893894210731.dkr.ecr.ap-south-1.amazonaws.com/cicd-pipeline
       - IMAGE_TAG=latest
       - echo $IMAGE_TAG
