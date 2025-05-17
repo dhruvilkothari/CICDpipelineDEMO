@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 893894210731.dkr.ecr.ap-south-1.amazonaws.com)
+      - REPOSITORY_URI=893894210731.dkr.ecr.ap-south-1.amazonaws.com/cicd-pipeline
+      - IMAGE_TAG=latest
+      - echo Using image tag: $IMAGE_TAG
+
+  build:
+    commands:
+      - echo Building the Spring Boot application...
+      - mvn clean package -DskipTests
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      - echo Build completed.
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image to ECR...
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - |
+        printf '[{"name":"%s","imageUri":"%s"}]' "cicd-pipeline" "$REPOSITORY_URI:$IMAGE_TAG" > imagedefinitions.json
+
+artifacts:
+  files: imagedefinitions.json
