@@ -16,5 +16,6 @@ public class UserController {
     @GetMapping("/{id}")
     public String hello2(@PathVariable  String id) {
         return "Hello,"+ id;
+
     }
 }
